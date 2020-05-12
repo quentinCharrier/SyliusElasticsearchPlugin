@@ -1,18 +1,12 @@
 const inputField = document.querySelector('#bitbag_elasticsearch_search_box_query');
-
 const responseField = document.querySelector('#search_autocomplete');
 const productResponseField = document.querySelector('#product-search-autocomplete');
 const categoryResponseField = document.querySelector('#category-search-autocomplete');
 const blogResponseField = document.querySelector('#blog-search-autocomplete');
 
 inputField.addEventListener('input', autocompleteSearch);
-
-inputField.addEventListener('focusout', () => {
-    responseField.style.display = 'none';
-});
-
+inputField.addEventListener('focusout', () => {setTimeout(function(){responseField.style.display = 'none';},500);});
 inputField.addEventListener('focusin', autocompleteSearch);
-
 
 async function autocompleteSearch () {
 
