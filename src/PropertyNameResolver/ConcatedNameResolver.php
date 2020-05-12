@@ -24,6 +24,6 @@ final class ConcatedNameResolver implements ConcatedNameResolverInterface
 
     public function resolvePropertyName(string $suffix): string
     {
-        return strtolower($this->propertyPrefix . '_' . $suffix);
+        return strtolower($this->propertyPrefix.'_'.$suffix);
     }
 }

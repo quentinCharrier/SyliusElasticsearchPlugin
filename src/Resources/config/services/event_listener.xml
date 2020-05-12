@@ -15,6 +15,10 @@
             <tag name="kernel.event_listener" event="sylius.option.post_update" method="updateIndex" />
             <tag name="kernel.event_listener" event="sylius.product.post_create" method="updateIndex" />
             <tag name="kernel.event_listener" event="sylius.product.post_update" method="updateIndex" />
+            <tag name="kernel.event_listener" event="sylius.taxon.post_create" method="updateIndex" />
+            <tag name="kernel.event_listener" event="sylius.taxon.post_update" method="updateIndex" />
+            <tag name="kernel.event_listener" event="odiseo_blog.article.post_create" method="updateIndex" />
+            <tag name="kernel.event_listener" event="odiseo_blog.article.post_update" method="updateIndex" />
         </service>
     </services>
 </container>

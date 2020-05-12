@@ -1,52 +1,160 @@
-(function ( $ ) {
-    'use strict';
+const inputField = document.querySelector('#bitbag_elasticsearch_search_box_query');
 
-    $.fn.extend({
-        autocompleteSearch: function (autocompleteInputElement, apiEndpointPath) {
-            $(autocompleteInputElement)
-                .search({
-                    type: 'category',
-                    minCharacters: 3,
-                    apiSettings: {
-                        onResponse: function (autocompleteResponse) {
-                            let
-                                response = {
-                                    results: {}
-                                }
-                            ;
+const responseField = document.querySelector('#search_autocomplete');
+const productResponseField = document.querySelector('#product-search-autocomplete');
+const categoryResponseField = document.querySelector('#category-search-autocomplete');
+const blogResponseField = document.querySelector('#blog-search-autocomplete');
 
-                            $.each(autocompleteResponse.items, function (index, item) {
-                                var
-                                    taxonName = item.taxon_name,
-                                    maxResults = 10
-                                ;
+inputField.addEventListener('input', autocompleteSearch);
 
-                                if (index >= maxResults) {
-                                    return false;
-                                }
+inputField.addEventListener('focusout', () => {
+    responseField.style.display = 'none';
+});
 
-                                if (response.results[taxonName] === undefined) {
-                                    response.results[taxonName] = {
-                                        name: taxonName,
-                                        results: []
-                                    };
-                                }
+inputField.addEventListener('focusin', autocompleteSearch);
 
-                                response.results[taxonName].results.push({
-                                    title: item.name,
-                                    description: item.description,
-                                    url: item.slug,
-                                    price: item.price,
-                                    image: item.image
-                                });
-                            });
 
-                            return response;
-                        },
-                        url: apiEndpointPath
-                    }
-                })
-            ;
+async function autocompleteSearch () {
+
+    let query = inputField.value;
+
+    if (query === '') {
+        return null;
+    }
+
+    const response = await fetch(`/auto-complete/product?query=${query}`);
+    document.querySelector('#bitbag_elasticsearch_search_box_search').classList.add("loading");
+
+    if (response.ok) {
+        const responseJson = await response.json();
+
+        if (responseJson.items.length > 0 ) {
+            renderProduct(responseJson.items);
         }
+
+        renderCategory(responseJson.categories);
+        renderArticles(responseJson.articles);
+        
+        if (responseJson.articles.length === 0 && responseJson.categories.length === 0 && responseJson.items.length === 0 )
+        {
+            renderEmpty();
+        }
+
+        setTimeout(function(){document.querySelector('#bitbag_elasticsearch_search_box_search').classList.remove("loading");},500); 
+        
+        responseField.style.display = 'block';
+
+    }
+}
+
+function renderEmpty ()
+{
+    productResponseField.innerHTML = '<p>No result for your search</p>';
+}
+
+function renderProduct (items)
+{
+    let resultProduct = [];
+
+    items.forEach(function (item, index) {
+
+          const maxResults = 10;
+          const taxonName = item.taxon_name;
+
+          if (index >= maxResults) {
+            return false;
+          }
+
+          resultProduct.push(item);
     });
-})( jQuery );
+
+    const htmlProduct = resultProduct.map( product => {
+        return `
+        <div class="column">
+            <div class="ui fluid">
+                <a href="/products/${product.slug}">
+                    <img src="${product.image}" alt="${product.name}" class="ui bordered image">
+                    <div class="content">
+                        ${product.name}
+                        <div class="sylius-product-price">${product.price}</div>
+                    </div>
+                </a>
+            </div>
+        </div>`; 
+    }).join('');
+
+    productResponseField.innerHTML = htmlProduct;
+}
+
+function renderCategory (categories)
+{
+    if (categories.length === 0) {
+        categoryResponseField.innerHTML = '';
+        return;
+    }
+
+    let resultCategory = [];
+
+    categories.forEach(function (item, index) {
+
+          const maxResults = 3;
+
+          if (index >= maxResults) {
+            return false;
+          }
+
+          resultCategory.push(item);
+    });
+
+    const htmlCategory = resultCategory.map( category => {
+        return `
+            <div class="ui fluid">
+                <a href="${category.slug}">
+                    <div class="content">
+                        ${category.name}
+                    </div>
+                </a>
+            </div>`; 
+    }).join('');
+
+    const title = '<span>Category<span>';
+
+    categoryResponseField.innerHTML = title + htmlCategory;
+}
+
+function renderArticles (articles)
+{
+    if (articles.length === 0) {
+        blogResponseField.innerHTML = '';
+        return;
+    }
+
+    let resultArticle = [];
+
+    articles.forEach(function (item, index) {
+
+          const maxResults = 3;
+
+          if (index >= maxResults) {
+            return false;
+          }
+
+          resultArticle.push(item);
+    });
+
+    const htmlBlog = resultArticle.map( article => {
+        return `
+            <div class="ui fluid">
+                <a href="${article.slug}">
+                    <img src="${article.image}" alt="${article.name}" class="ui bordered image">
+                    <div class="content">
+                        ${article.name}
+                    </div>
+                </a>
+            </div>`; 
+    }).join('');
+
+    const title = '<span>Articles<span>';
+
+    blogResponseField.innerHTML = title + htmlBlog;
+}

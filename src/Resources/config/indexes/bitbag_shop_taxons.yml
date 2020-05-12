@@ -1,0 +1,22 @@
+parameters:
+    bitbag_es_shop_taxons_name_property_prefix: name
+    bitbag_es_shop_taxons_description_property_prefix: description
+    bitbag_es_shop_children_property: children
+
+fos_elastica:
+    indexes:
+        bitbag_shop_taxons:
+            index_name: "bitbag_shop_taxons_%kernel.environment%"
+            types:
+                default:
+                    properties:
+                        option_code:
+                            property_path: code
+                    persistence:
+                        driver: orm
+                        model: "%sylius.model.taxon.class%"
+                        listener:
+                            defer: true
+                            logger: true
+                        elastica_to_model_transformer:
+                            ignore_missing: true

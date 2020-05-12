@@ -5,4 +5,19 @@
         {{- form_widget(form) -}}
         <button type="submit" id="bitbag_elasticsearch_search_box_search" class="ui button">{{ 'bitbag_sylius_elasticsearch_plugin.ui.search_box.search_button.label'|trans }}</button>
     </div>
+    <div id="search_autocomplete" class="ui menu search-autocomplete">
+    	<div class="ui stackable grid container">
+	    	<div class="twelve wide column" >
+	    		<div class="ui two column stackable grid" id='product-search-autocomplete'></div>
+	    	</div>
+	    	<div class="four wide column">
+	    		<div class="ui one column stackable grid" id='content-search-autocomplete'>
+	    			<div class="column" id='category-search-autocomplete' >
+                	</div>
+                	<div class="column" id='blog-search-autocomplete'>
+                	</div>
+                </div>
+	    	</div>
+	    </div>
+    </div>
 {% endblock %}

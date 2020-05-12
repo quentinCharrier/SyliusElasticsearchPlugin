@@ -1,0 +1,22 @@
+parameters:
+    blog_article_name_property_prefix: title
+    blog_article_content_property_prefix: content
+    blog_article_categories_property: categories
+
+fos_elastica:
+    indexes:
+        bitbag_blog_article:
+            index_name: "bitbag_blog_article_%kernel.environment%"
+            types:
+                default:
+                    properties:
+                        attribute_code:
+                            property_path: code
+                    persistence:
+                        driver: orm
+                        model: "%odiseo_blog.model.article.class%"
+                        listener:
+                            defer: true
+                            logger: true
+                        elastica_to_model_transformer:
+                            ignore_missing: true

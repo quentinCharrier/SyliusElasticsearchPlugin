@@ -5,16 +5,37 @@
 {% import '@SyliusUi/Macro/messages.html.twig' as messages %}
 {% import '@SyliusUi/Macro/pagination.html.twig' as pagination %}
 
-{% block stylesheets %}
-    {{ parent() }}
-
-    {% include 'SyliusUiBundle::_stylesheets.html.twig' with {'path': 'bundles/bitbagsyliuselasticsearchplugin/css/bitbag-autocomplete-search.css'} %}
-{% endblock %}
-
 {% block content %}
     <h1 class="ui monster section dividing header">
         {{ 'bitbag_sylius_elasticsearch_plugin.ui.search_header'|trans }}
     </h1>
+
+    <div class="twelve wide column">
+        <div class="ui two column stackable grid" id="products">
+            <div class="column">
+                <h3> Result for category </h3>
+                {% if taxons|length > 0 %}
+                        {% for taxon in taxons %}
+                            <p>{{ taxon.parent }} / {{ taxon.name }}</p>
+                        {% endfor %}
+                {% else %}
+                    {{ messages.info('sylius.ui.no_results_to_display') }}
+                {% endif %}
+            </div>
+            <div class="column">
+                <h3> Result for articles </h3>
+                {% if articles|length > 0 %}
+                        {% for article in articles %}
+                            <p>{{ article.title }}</p>
+                        {% endfor %}
+                {% else %}
+                    {{ messages.info('sylius.ui.no_results_to_display') }}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <h3> Result for product </h3>
     <div class="ui stackable grid">
         <div class="four wide column">
             <div id="filters-vertical" class="ui fluid vertical menu">
@@ -29,7 +50,7 @@
                         {{ form_rest(searchForm) }}
                     </div>
                     <div class="item">
-                        <button type="submit" class="ui primary icon labeled button fluid">
+                        <button type="submit" class="ui primary icon labeled button" style="width: 100%;">
                             <i class="search icon"></i>
                             {{ 'bitbag_sylius_elasticsearch_plugin.ui.filter'|trans }}
                         </button>

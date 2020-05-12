@@ -7,6 +7,8 @@ namespace BitBag\SyliusElasticsearchPlugin\Controller\Action\Shop;
 use BitBag\SyliusElasticsearchPlugin\Block\SearchFormEventListener;
 use BitBag\SyliusElasticsearchPlugin\Controller\RequestDataHandler\PaginationDataHandlerInterface;
 use BitBag\SyliusElasticsearchPlugin\Facet\RegistryInterface;
+use BitBag\SyliusElasticsearchPlugin\Finder\BlogArticlesFinderInterface;
+use BitBag\SyliusElasticsearchPlugin\Finder\ShopTaxonsFinderInterface;
 use BitBag\SyliusElasticsearchPlugin\Model\Search;
 use BitBag\SyliusElasticsearchPlugin\QueryBuilder\QueryBuilderInterface;
 use Elastica\Query;
@@ -35,13 +37,21 @@ final class SearchAction
     /** @var PaginationDataHandlerInterface */
     private $paginationDataHandler;
 
+    /** @var ShopTaxonsFinderInterface */
+    private $shopTaxonsFinder;
+
+    /** @var BlogArticlesFinderInterface */
+    private $blogArticleFinder;
+
     public function __construct(
         EngineInterface $templatingEngine,
         PaginatedFinderInterface $finder,
         SearchFormEventListener $searchFormEventListener,
         RegistryInterface $facetRegistry,
         QueryBuilderInterface $searchProductsQueryBuilder,
-        PaginationDataHandlerInterface $paginationDataHandler
+        PaginationDataHandlerInterface $paginationDataHandler,
+        ShopTaxonsFinderInterface $shopTaxonsFinder,
+        BlogArticlesFinderInterface $blogArticleFinder
     ) {
         $this->templatingEngine = $templatingEngine;
         $this->finder = $finder;
@@ -49,6 +59,8 @@ final class SearchAction
         $this->facetRegistry = $facetRegistry;
         $this->searchProductsQueryBuilder = $searchProductsQueryBuilder;
         $this->paginationDataHandler = $paginationDataHandler;
+        $this->shopTaxonsFinder = $shopTaxonsFinder;
+        $this->blogArticleFinder = $blogArticleFinder;
     }
 
     public function __invoke(Request $request): Response
@@ -58,6 +70,8 @@ final class SearchAction
         $form->handleRequest($request);
 
         $results = null;
+        $taxons = null;
+        $articles = null;
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var Search $search */
             $search = $form->getData();
@@ -80,14 +94,21 @@ final class SearchAction
             $query = new Query($boolQuery);
 
             $results = $this->finder->findPaginated($query);
+            $taxons = $this->shopTaxonsFinder->find($search->getBox()->getQuery());
+            $articles = $this->blogArticleFinder->find($search->getBox()->getQuery());
+
             $paginationData = $this->paginationDataHandler->retrieveData($request->query->all());
             $results->setCurrentPage($paginationData[PaginationDataHandlerInterface::PAGE_INDEX]);
             $results->setMaxPerPage($paginationData[PaginationDataHandlerInterface::LIMIT_INDEX]);
         }
 
         return $this->templatingEngine->renderResponse(
-            $template,
-            ['results' => $results, 'searchForm' => $form->createView()]
+            $template, [
+                'results' => $results,
+                'searchForm' => $form->createView(),
+                'taxons' => $taxons,
+                'articles' => $articles,
+            ]
         );
     }
 }

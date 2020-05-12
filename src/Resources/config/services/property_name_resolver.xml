@@ -47,5 +47,45 @@
         <service id="bitbag_sylius_elasticsearch_plugin.property_name_resolver.taxon_position" class="BitBag\SyliusElasticsearchPlugin\PropertyNameResolver\ConcatedNameResolver">
             <argument>%bitbag_es_shop_taxon_position_property_prefix%</argument>
         </service>
+
+        <service id="bitbag_sylius_elasticsearch_plugin.property_name_resolver.taxon_name" class="BitBag\SyliusElasticsearchPlugin\PropertyNameResolver\ConcatedNameResolver">
+            <argument>%bitbag_es_shop_taxons_name_property_prefix%</argument>
+        </service>
+
+        <service id="bitbag_sylius_elasticsearch_plugin.property_name_resolver.taxon_description" class="BitBag\SyliusElasticsearchPlugin\PropertyNameResolver\ConcatedNameResolver">
+            <argument>%bitbag_es_shop_taxons_description_property_prefix%</argument>
+        </service>
+
+
+        <service id="bitbag_sylius_elasticsearch_plugin.search_taxons_property_name_resolver_registry" class="BitBag\SyliusElasticsearchPlugin\PropertyNameResolver\SearchTaxonsPropertyNameResolverRegistry">
+            <call method="addPropertyNameResolver">
+                <argument type="service" id="bitbag_sylius_elasticsearch_plugin.property_name_resolver.taxon_name" />
+            </call>
+            <call method="addPropertyNameResolver">
+                <argument type="service" id="bitbag_sylius_elasticsearch_plugin.property_name_resolver.taxon_description" />
+            </call>
+        </service>
+        <service id="BitBag\SyliusElasticsearchPlugin\PropertyNameResolver\SearchTaxonsPropertyNameResolverRegistryInterface" alias="bitbag_sylius_elasticsearch_plugin.search_taxons_property_name_resolver_registry" />
+
+
+        <service id="bitbag_sylius_elasticsearch_plugin.property_name_resolver.blog_article_name" class="BitBag\SyliusElasticsearchPlugin\PropertyNameResolver\ConcatedNameResolver">
+            <argument>%blog_article_name_property_prefix%</argument>
+        </service>
+
+        <service id="bitbag_sylius_elasticsearch_plugin.property_name_resolver.blog_article_content" class="BitBag\SyliusElasticsearchPlugin\PropertyNameResolver\ConcatedNameResolver">
+            <argument>%blog_article_content_property_prefix%</argument>
+        </service>
+
+
+        <service id="bitbag_sylius_elasticsearch_plugin.search_blog_article_property_name_resolver_registry" class="BitBag\SyliusElasticsearchPlugin\PropertyNameResolver\SearchBlogArticlePropertyNameResolverRegistry">
+            <call method="addPropertyNameResolver">
+                <argument type="service" id="bitbag_sylius_elasticsearch_plugin.property_name_resolver.blog_article_name" />
+            </call>
+            <call method="addPropertyNameResolver">
+                <argument type="service" id="bitbag_sylius_elasticsearch_plugin.property_name_resolver.blog_article_content" />
+            </call>
+        </service>
+        <service id="BitBag\SyliusElasticsearchPlugin\PropertyNameResolver\SearchBlogArticlePropertyNameResolverRegistryInterface" alias="bitbag_sylius_elasticsearch_plugin.search_blog_article_property_name_resolver_registry" />
+
     </services>
 </container>

@@ -24,11 +24,11 @@ final class PriceNameResolver implements PriceNameResolverInterface
 
     public function resolveMinPriceName(): string
     {
-        return 'min_' . $this->pricePropertyPrefix;
+        return 'min_'.$this->pricePropertyPrefix;
     }
 
     public function resolveMaxPriceName(): string
     {
-        return 'max_' . $this->pricePropertyPrefix;
+        return 'max_'.$this->pricePropertyPrefix;
     }
 }

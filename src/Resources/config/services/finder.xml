@@ -23,5 +23,15 @@
             <argument type="service" id="bitbag_sylius_elasticsearch_plugin.query_builder.product_attributes_by_taxon" />
             <argument>%bitbag_es_shop_attribute_taxons_property%</argument>
         </service>
+
+        <service id="bitbag_sylius_elasticsearch_plugin.finder.shop_taxons" class="BitBag\SyliusElasticsearchPlugin\Finder\ShopTaxonsFinder">
+            <argument type="service" id="bitbag_sylius_elasticsearch_plugin.query_builder.shop_taxons" />
+            <argument type="service" id="fos_elastica.finder.bitbag_shop_taxons.default" />
+        </service>
+
+        <service id="bitbag_sylius_elasticsearch_plugin.finder.blog_article" class="BitBag\SyliusElasticsearchPlugin\Finder\BlogArticlesFinder">
+            <argument type="service" id="bitbag_sylius_elasticsearch_plugin.query_builder.blog_article" />
+            <argument type="service" id="fos_elastica.finder.bitbag_blog_article.default" />
+        </service>
     </services>
 </container>

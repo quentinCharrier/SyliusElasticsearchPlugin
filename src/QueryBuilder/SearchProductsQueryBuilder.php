@@ -41,23 +41,11 @@ final class SearchProductsQueryBuilder implements QueryBuilderInterface
     public function buildQuery(array $data): ?AbstractQuery
     {
         if (!array_key_exists(self::QUERY_KEY, $data)) {
-            throw new \RuntimeException(
-                sprintf(
-                    'Could not build search products query because there\'s no "query" key in provided data. ' .
-                    'Got the following keys: %s',
-                    implode(', ', array_keys($data))
-                )
-            );
+            throw new \RuntimeException(sprintf('Could not build search products query because there\'s no "query" key in provided data. '.'Got the following keys: %s', implode(', ', array_keys($data))));
         }
         $query = $data[self::QUERY_KEY];
         if (!is_string($query)) {
-            throw new \RuntimeException(
-                sprintf(
-                    'Could not build search products query because the provided "query" is expected to be a string ' .
-                    'but "%s" is given.',
-                    is_object($query) ? get_class($query) : gettype($query)
-                )
-            );
+            throw new \RuntimeException(sprintf('Could not build search products query because the provided "query" is expected to be a string '.'but "%s" is given.', is_object($query) ? get_class($query) : gettype($query)));
         }
 
         $multiMatch = new MultiMatch();
@@ -72,6 +60,7 @@ final class SearchProductsQueryBuilder implements QueryBuilderInterface
         $bool->addMust($multiMatch);
         $bool->addFilter($this->isEnabledQueryBuilder->buildQuery([]));
         $bool->addFilter($this->hasChannelQueryBuilder->buildQuery([]));
+
         return $bool;
     }
 }

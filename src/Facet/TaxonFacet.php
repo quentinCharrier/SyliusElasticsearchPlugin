@@ -31,6 +31,7 @@ final class TaxonFacet implements FacetInterface
     {
         $terms = new Terms(self::FACET_ID);
         $terms->setField($this->getField());
+
         return $terms;
     }
 
@@ -52,7 +53,7 @@ final class TaxonFacet implements FacetInterface
 
     private function getField(): string
     {
-        return $this->taxonsPropertyName . '.keyword';
+        return $this->taxonsPropertyName.'.keyword';
     }
 
     public function getLabel(): string

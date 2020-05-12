@@ -11,10 +11,24 @@
 
         <service id="BitBag\SyliusElasticsearchPlugin\Transformer\Product\ImageTransformer">
             <argument type="service" id="liip_imagine.service.filter" />
+            <argument type="service" id="filesystem" />
         </service>
 
         <service id="BitBag\SyliusElasticsearchPlugin\Transformer\Product\SlugTransformer">
             <argument type="service" id="router.default" />
+        </service>
+
+        <service id="BitBag\SyliusElasticsearchPlugin\Transformer\Taxon\SlugTransformer">
+            <argument type="service" id="router.default" />
+        </service>
+
+        <service id="BitBag\SyliusElasticsearchPlugin\Transformer\Article\SlugTransformer">
+            <argument type="service" id="router.default" />
+        </service>
+
+        <service id="BitBag\SyliusElasticsearchPlugin\Transformer\Article\ImageTransformer">
+            <argument type="service" id="liip_imagine.service.filter" />
+            <argument type="service" id="filesystem" />
         </service>
     </services>
 </container>

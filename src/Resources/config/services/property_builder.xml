@@ -85,5 +85,40 @@
             <argument type="service" id="bitbag_sylius_elasticsearch_plugin.property_name_resolver.short_description" />
             <tag name="kernel.event_subscriber" />
         </service>
+
+        <service id="bitbag_sylius_elasticsearch_plugin.property_builder.taxon_name" class="BitBag\SyliusElasticsearchPlugin\PropertyBuilder\TaxonNameBuilder">
+            <argument type="service" id="bitbag_sylius_elasticsearch_plugin.property_name_resolver.taxon_name" />
+            <tag name="kernel.event_subscriber" />
+        </service>
+
+        <service id="bitbag_sylius_elasticsearch_plugin.property_builder.taxon_description" class="BitBag\SyliusElasticsearchPlugin\PropertyBuilder\TaxonDescriptionBuilder">
+            <argument type="service" id="bitbag_sylius_elasticsearch_plugin.property_name_resolver.taxon_description" />
+            <tag name="kernel.event_subscriber" />
+        </service>
+
+        <service id="bitbag_sylius_elasticsearch_plugin.property_builder.taxon_children" class="BitBag\SyliusElasticsearchPlugin\PropertyBuilder\TaxonChildrenBuilder">
+            <argument>%bitbag_es_shop_children_property%</argument>
+            <tag name="kernel.event_subscriber" />
+        </service>
+
+
+        <service id="bitbag_sylius_elasticsearch_plugin.property_builder.blog_article_name" class="BitBag\SyliusElasticsearchPlugin\PropertyBuilder\BlogArticleNameBuilder">
+            <argument type="service" id="bitbag_sylius_elasticsearch_plugin.property_name_resolver.blog_article_name" />
+            <tag name="kernel.event_subscriber" />
+        </service>
+
+        <service id="bitbag_sylius_elasticsearch_plugin.property_builder.blog_article_content" class="BitBag\SyliusElasticsearchPlugin\PropertyBuilder\BlogArticleContentBuilder">
+            <argument type="service" id="bitbag_sylius_elasticsearch_plugin.property_name_resolver.blog_article_content" />
+            <tag name="kernel.event_subscriber" />
+        </service>
+
+        <service id="bitbag_sylius_elasticsearch_plugin.property_builder.blog_article_categories" class="BitBag\SyliusElasticsearchPlugin\PropertyBuilder\BlogArticleCategoriesBuilder">
+            <argument type="service" id="bitbag_sylius_elasticsearch_plugin.property_builder.mapper.blog_article_categories" />
+            <argument>%blog_article_categories_property%</argument>
+            <tag name="kernel.event_subscriber" />
+        </service>
+
+        <service id="bitbag_sylius_elasticsearch_plugin.property_builder.mapper.blog_article_categories" class="BitBag\SyliusElasticsearchPlugin\PropertyBuilder\Mapper\BlogCategoriesMapper" />
+
     </services>
 </container>

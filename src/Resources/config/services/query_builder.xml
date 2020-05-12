@@ -71,5 +71,15 @@
             <argument type="service" id="bitbag_sylius_elasticsearch_plugin.query_builder.is_enabled" />
             <argument type="service" id="bitbag_sylius_elasticsearch_plugin.query_builder.has_channel" />
         </service>
+
+        <service id="bitbag_sylius_elasticsearch_plugin.query_builder.shop_taxons" class="BitBag\SyliusElasticsearchPlugin\QueryBuilder\ShopTaxonsQueryBuilder">
+            <argument type="service" id="bitbag_sylius_elasticsearch_plugin.search_taxons_property_name_resolver_registry" />
+            <argument type="service" id="sylius.context.locale" />
+        </service>
+
+        <service id="bitbag_sylius_elasticsearch_plugin.query_builder.blog_article" class="BitBag\SyliusElasticsearchPlugin\QueryBuilder\BlogArticlesQueryBuilder">
+            <argument type="service" id="bitbag_sylius_elasticsearch_plugin.search_blog_article_property_name_resolver_registry" />
+            <argument type="service" id="sylius.context.locale" />
+        </service>
     </services>
 </container>

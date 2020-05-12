@@ -37,6 +37,7 @@ final class OptionFacet implements FacetInterface
     {
         $aggregation = new Terms('');
         $aggregation->setField($this->getFieldName());
+
         return $aggregation;
     }
 
@@ -48,6 +49,7 @@ final class OptionFacet implements FacetInterface
     public function getBucketLabel(array $bucket): string
     {
         $label = ucwords(str_replace('_', ' ', $bucket['key']));
+
         return sprintf('%s (%s)', $label, $bucket['doc_count']);
     }
 
@@ -57,11 +59,12 @@ final class OptionFacet implements FacetInterface
         if (!$productOption instanceof ProductOptionInterface) {
             throw new \RuntimeException(sprintf('Cannot find product option with code "%s"', $this->productOptionCode));
         }
+
         return $productOption->getName();
     }
 
     private function getFieldName(): string
     {
-        return $this->optionNameResolver->resolvePropertyName($this->productOptionCode) . '.keyword';
+        return $this->optionNameResolver->resolvePropertyName($this->productOptionCode).'.keyword';
     }
 }

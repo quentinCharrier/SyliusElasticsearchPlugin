@@ -52,14 +52,14 @@ final class TaxonRepository implements TaxonRepositoryInterface
             ->select('t')
             ->leftJoin($this->productTaxonEntityClass, 'pt', Join::WITH, 'pt.taxon = t.id')
             ->where(
-                'pt.product IN(' .
+                'pt.product IN('.
                 $this
                     ->productRepository->createQueryBuilder('p')
                     ->leftJoin($this->productAttributeEntityClass, 'pav', Join::WITH, 'pav.subject = p.id')
                     ->where('pav.attribute = :attribute')
                     ->getQuery()
                     ->getDQL()
-                . ')'
+                .')'
             )
             ->setParameter(':attribute', $attribute)
             ->getQuery()

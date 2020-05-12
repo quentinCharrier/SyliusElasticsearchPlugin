@@ -14,7 +14,17 @@
 {% block content %}
     <h1 class="ui monster section dividing header">
         {{ taxon.name }}
-        <div class="sub header">{{ taxon.description }}</div>
+        <div class="sub header">{{ taxon.description }} 
+
+            {% if taxon.children %}
+                {% for children in taxon.children %}
+                    <div class="column">
+                        <p>{{ children.name }}</p>
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+        </div>
     </h1>
     {{ form_start(form, {'method': 'GET', 'attr': {'class': 'ui loadable form'}}) }}
     <div class="ui stackable grid">
@@ -65,10 +75,4 @@
 
 {% block javascripts %}
     {{ parent() }}
-
-    {% include 'SyliusUiBundle::_javascripts.html.twig' with {'path': 'bundles/bitbagsyliuselasticsearchplugin/js/bitbag-autocomplete-search.js'} %}
-
-    <script type="application/javascript">
-        $(document).autocompleteSearch('#products-search', '{{ url('bitbag_sylius_elasticsearch_plugin_shop_auto_complete_product_name') }}?query={query}')
-    </script>
 {% endblock %}
