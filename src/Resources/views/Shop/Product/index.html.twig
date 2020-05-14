@@ -17,11 +17,13 @@
         <div class="sub header">{{ taxon.description }} 
 
             {% if taxon.children %}
-                {% for children in taxon.children %}
-                    <div class="column">
-                        <p>{{ children.name }}</p>
-                    </div>
-                {% endfor %}
+                <div class="column">
+                    {% for children in taxon.children %}                        
+                        <ul>
+                            <li><a href="{{ path('bitbag_sylius_elasticsearch_plugin_shop_list_products', {'slug': children.slug, '_locale': children.translation.locale}) }}">{{ taxon.name }} / {{ children.name }}</a></li>
+                        </ul>
+                    {% endfor %}
+                </div>
             {% endif %}
 
         </div>

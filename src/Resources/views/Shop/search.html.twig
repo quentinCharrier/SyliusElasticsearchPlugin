@@ -15,9 +15,11 @@
             <div class="column">
                 <h3> Result for category </h3>
                 {% if taxons|length > 0 %}
+                    <ul>
                         {% for taxon in taxons %}
-                            <p>{{ taxon.parent }} / {{ taxon.name }}</p>
+                            <li><a href="${taxon.slug}">{{ taxon.parent }} / {{ taxon.name }}</a></li>
                         {% endfor %}
+                    </ul>
                 {% else %}
                     {{ messages.info('sylius.ui.no_results_to_display') }}
                 {% endif %}
@@ -26,7 +28,16 @@
                 <h3> Result for articles </h3>
                 {% if articles|length > 0 %}
                         {% for article in articles %}
-                            <p>{{ article.title }}</p>
+                            <div class="ui fluid">
+                                <a class="header" href="{{ path('odiseo_sylius_blog_plugin_shop_article_show', {'slug' : article.slug}) }}">
+                                    {% if article.images|length > 0 %}
+                                        <img src="{{ article.images[0].path|imagine_filter(filter|default('sylius_shop_product_tiny_thumbnail')) }}" class="ui bordered image" alt="{{ article.images[0].path }}">
+                                    {% endif %}
+                                    <div class="content">
+                                        {{article.title}}
+                                    </div>
+                                </a>
+                            </div>
                         {% endfor %}
                 {% else %}
                     {{ messages.info('sylius.ui.no_results_to_display') }}
