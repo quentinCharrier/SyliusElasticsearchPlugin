@@ -66,7 +66,7 @@ function renderProduct (items)
         return `
         <div class="column">
             <div class="ui fluid">
-                <a href="/products/${product.slug}">
+                <a href="${product.slug}">
                     <img src="${product.image}" alt="${product.name}" class="ui bordered image">
                     <div class="content">
                         ${product.name}
